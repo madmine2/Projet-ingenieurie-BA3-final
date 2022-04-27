@@ -12,10 +12,10 @@ def findColor(frame,x,y, I) :
     x = y
     y = temp_x
     temp_frame = frame[x-10:x+10, y-10:y+10]
-    color = ["rouge","bleu","vert","jaune"]
+    color = ["rouge","vert","bleu","jaune"]
     color_id = ["1","2","3","4"]
-    refLow = [[165, 80, 150],[90, 80, 2],[45, 52, 72],[25, 60, 120]]
-    refHigh = [[184, 255, 255],[110, 255, 255],[60, 255, 255],[40, 255, 255]]
+    refLow = [[165, 80, 150],[45, 52, 72],[90, 80, 2],[25, 60, 120]]
+    refHigh = [[184, 255, 255],[60, 255, 255],[110, 255, 255],[40, 255, 255]]
     color_dict = {"rouge" : 0, "bleu":0,"jaune": 0,"vert":0}
 
     #make dict of the colors in the image
@@ -81,6 +81,8 @@ def capture_video():
 
             face_colour.append(int(face_temp))
             print(face_colour)
+            return face_colour
+
         # Red color
         low_red = np.array([165, 80, 150])
         high_red = np.array([184, 255, 255])
@@ -251,6 +253,10 @@ def capture_video():
     cv2.destroyAllWindows()
 # Press the green button in the gutter to run the script.
 
+def main():
+    matrix = []
+    for i in range(4):
+        matrix.append()
 
 if __name__ == '__main__':
     capture_video()
