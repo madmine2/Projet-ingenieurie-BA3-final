@@ -13,6 +13,7 @@ import main_acquisition
 #faces = main_acquisition()  (conceptuel)
 
 matrix = []
+matrix2 = []
 a = ["334411113",
 "233122433",
 "412243344",
@@ -23,11 +24,11 @@ b = ["333311114",
      "444444442"]
 def main():
 
-
-    matrix = main_acquisition.capture_video()
+    for i in range(4):
+        matrix.append(main_acquisition.capture_video())
     for i in range(4):
         face = [int(b[i][j]) for j in range(9)]
-        matrix.append(face)
+        matrix2.append(face)
 
     #solveur pas optimal, envisager de laisser le choix avec solveur optimal
     pyraminx = Pyraminx(matrix[0], matrix[1], matrix[2], matrix[3])

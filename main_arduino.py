@@ -20,8 +20,10 @@ def main(algo):
     for l in algo :
         message += l
     # time.sleep(1.5)
+    temp = ["r'","U"]
 
-    print("oui",write_reads(message))
+    print(write_reads("12"))
+    time.sleep(1000)
 
 
 
