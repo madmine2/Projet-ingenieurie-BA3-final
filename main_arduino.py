@@ -11,19 +11,51 @@ def write_reads(x):
     data = arduino.readline()
     return data
 
+def traduction(algo):
+    temp = ""
+    for move in algo:
+        if move == 'R':
+            temp += '1'
+        elif move == "R'":
+            temp += '2'
+        elif move == 'U':
+            temp += '3'
+        elif move == "U'":
+            temp += '4'
+        elif move == 'L':
+            temp += '5'
+        elif move == "L'":
+            temp += '6'
+        elif move == 'F':
+            temp += '7'
+        elif move == "F'":
+            temp += '8'
 
+    return temp
 
 def main(algo):
-    sommets = [letter for letter in algo if letter.islower()]
-    middle = [letter for letter in algo if letter.isupper()]
-    message = ""
-    for l in algo :
-        message += l
-    # time.sleep(1.5)
-    temp = ["r'","U"]
 
-    print(write_reads("12"))
-    time.sleep(1000)
+    sommet = [letter.replace("'","P").upper().replace('P', "'" ) for letter in algo if letter.islower()]
+    sommets = traduction(sommet)
+    middl = [letter for letter in algo if letter.isupper()]
+    middle = traduction(middl)
+
+    message_sommet = "9"
+    for l in sommets :
+        message_sommet += l
+
+
+    message_face = "0"
+    for l in middle:
+        message_face += l
+    # time.sleep(1.5)
+    temp = ["r'", "U"]
+    print(message_sommet)
+    write_reads(message_sommet)
+    time.sleep(1*len(sommet))
+    print(message_face)
+    write_reads(message_face)
+    time.sleep(1 * len(middl))
 
 
 

@@ -16,6 +16,10 @@ def findColor(frame,x,y, I) :
     color_id = ["1","2","3","4"]
     refLow = [[165, 80, 150],[45, 52, 72],[90, 80, 2],[25, 60, 120]]
     refHigh = [[184, 255, 255],[60, 255, 255],[110, 255, 255],[40, 255, 255]]
+    ref2Low = [ [0,0,60],[30,120,0],[90, 80, 2] ,[0,80,60]  ]
+    ref2High = [[60,20,150],[85,255,255],[110, 255, 255],[20,100,150]]
+    refLow = ref2Low
+    refHigh = ref2High
     color_dict = {"rouge" : 0, "bleu":0,"jaune": 0,"vert":0}
 
     #make dict of the colors in the image
@@ -57,6 +61,7 @@ def capture_video():
         frame = Image.fromarray(frame)
 
         draw = ImageDraw.Draw(frame, "RGBA")
+
         coordTriangleX = [300,200,300,400,100,200,300,400,500]
         coordTriangleY = [100,250,200,250,400,350,400,350,400]
         for i in range(9):
@@ -65,10 +70,12 @@ def capture_video():
             y = coordTriangleY[i]
 
             draw.rectangle((x - 10, y - 10, x + 10, y + 10), outline=(0, 0, 0, 125))
-
+        draw.rectangle((300 - 2, 200 - 2, 300 + 2, 200 + 2), outline=(100, 100, 100, 125))
         frame = np.array(frame)
 
         hsv_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+        if cv2.waitKey(1) & 0xFF == ord('p'):
+            print(hsv_frame[300,200])
 
         if cv2.waitKey(1) & 0xFF == ord(' '):
             face_temp = ""
@@ -81,7 +88,7 @@ def capture_video():
 
             face_colour.append(int(face_temp))
             print(face_colour)
-            return face_colour
+            #return face_colour
 
         # Red color
         low_red = np.array([165, 80, 150])
@@ -111,16 +118,6 @@ def capture_video():
         cv2.imshow("Blue", blue)
         cv2.imshow("Green", green)
         cv2.imshow("Yellow", yellow)
-
-
-
-
-
-
-
-
-
-
 
 
 

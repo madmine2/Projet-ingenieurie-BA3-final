@@ -24,11 +24,11 @@ b = ["333311114",
      "444444442"]
 def main():
 
+    # for i in range(4):
+    #     matrix2.append(main_acquisition.capture_video())
     for i in range(4):
-        matrix.append(main_acquisition.capture_video())
-    for i in range(4):
-        face = [int(b[i][j]) for j in range(9)]
-        matrix2.append(face)
+        face = [int(a[i][j]) for j in range(9)]
+        matrix.append(face)
 
     #solveur pas optimal, envisager de laisser le choix avec solveur optimal
     pyraminx = Pyraminx(matrix[0], matrix[1], matrix[2], matrix[3])
@@ -51,9 +51,10 @@ def main():
     algo = pSolver.solve() #résous le pyraminx
     algo = pUtils.simplifyAlgo(algo) #simplifie l'algo
     time.sleep(2) # problème avec les ports serial sans ce timer (pourquoi ???? I DON T FUCKING KNOW, je viens de perdre 2 heures à cause de ça)
-    main_arduino.main(algo)
     print([letter for letter in algo if letter.islower()])
     print([letter for letter in algo if letter.isupper()])
+    main_arduino.main(algo)
+
     exit()
 
 
