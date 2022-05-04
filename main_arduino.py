@@ -2,7 +2,7 @@
 import serial
 import time
 from tkinter import *
-arduino = serial.Serial(port='COM4', baudrate=115200, timeout=.1)
+arduino = serial.Serial(port='COM6', baudrate=115200, timeout=.1)
 
 
 def write_reads(x):

@@ -4,7 +4,15 @@ import numpy as np
 
 
 from PIL import Image, ImageDraw
-face_colour = []
+
+
+refLow = [[165, 80, 150], [55, 30, 50], [90, 80, 2], [10, 40, 105]]
+refHigh = [[184, 255, 255], [85, 255, 255], [110, 255, 255], [50, 255, 255]]
+ref2Low = [[0, 0, 60], [30, 120, 0], [90, 80, 2], [0, 80, 60]]
+ref2High = [[60, 20, 150], [85, 255, 255], [110, 255, 255], [20, 100, 150]]
+# refLow = ref2Low
+# refHigh = ref2High
+
 
 def findColor(frame,x,y, I) :
     #take part of the image
@@ -14,12 +22,7 @@ def findColor(frame,x,y, I) :
     temp_frame = frame[x-10:x+10, y-10:y+10]
     color = ["rouge","vert","bleu","jaune"]
     color_id = ["1","2","3","4"]
-    refLow = [[165, 80, 150],[45, 52, 72],[90, 80, 2],[25, 60, 120]]
-    refHigh = [[184, 255, 255],[60, 255, 255],[110, 255, 255],[40, 255, 255]]
-    ref2Low = [ [0,0,60],[30,120,0],[90, 80, 2] ,[0,80,60]  ]
-    ref2High = [[60,20,150],[85,255,255],[110, 255, 255],[20,100,150]]
-    refLow = ref2Low
-    refHigh = ref2High
+
     color_dict = {"rouge" : 0, "bleu":0,"jaune": 0,"vert":0}
 
     #make dict of the colors in the image
@@ -30,6 +33,9 @@ def findColor(frame,x,y, I) :
                 for l in range(3):
                     if temp_frame[i][j][l] < refLow[k][l] or temp_frame[i][j][l] > refHigh[k][l]:
                         temp = True
+                # if l == 0:
+                #     if temp_frame[i][j][1] < 10  and  temp_frame[i][j][1] >= refLow[k][1] and  temp_frame[i][j][1] <= refHigh[k][1] and temp_frame[i][j][2] >= 70 and  temp_frame[i][j][2] <= refHigh[k][2]:
+                #         temp = False
                 if temp == False:
                    color_dict[color[k]] +=1
 
@@ -37,7 +43,7 @@ def findColor(frame,x,y, I) :
     temppp = 0
     color_dom ="0"
     for i in range(4):
-        if color_dict[color[i]] >= temp:
+        if color_dict[color[i]] >= temppp:
             temppp = color_dict[color[i]]
             color_dom = color_id[i]
 
@@ -47,8 +53,9 @@ def findColor(frame,x,y, I) :
 
 
 def capture_video():
+    face_colour = []
     # define a video capture object
-    vid = cv2.VideoCapture(0)
+    vid = cv2.VideoCapture(1)
  
     pos = 0
     temp = 0
@@ -63,7 +70,7 @@ def capture_video():
         draw = ImageDraw.Draw(frame, "RGBA")
 
         coordTriangleX = [300,200,300,400,100,200,300,400,500]
-        coordTriangleY = [100,250,200,250,400,350,400,350,400]
+        coordTriangleY = [50,250,200,250,400,350,400,350,400]
         for i in range(9):
 
             x = coordTriangleX[i]
@@ -75,46 +82,55 @@ def capture_video():
 
         hsv_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
         if cv2.waitKey(1) & 0xFF == ord('p'):
-            print(hsv_frame[300,200])
+            print(hsv_frame[200,300])
 
         if cv2.waitKey(1) & 0xFF == ord(' '):
-            face_temp = ""
+            face_temp = []
             for i in range(9):
 
                 x = coordTriangleX[i]
                 y = coordTriangleY[i]
-                face_temp += findColor(hsv_frame, x, y, i)
+                face_temp.append( int(findColor(hsv_frame, x, y, i)))
                 print(face_temp)
 
-            face_colour.append(int(face_temp))
-            print(face_colour)
-            #return face_colour
+
+            print(face_temp)
+            vid.release()
+            # Destroy all the windows
+            cv2.destroyAllWindows()
+            return face_temp
 
         # Red color
-        low_red = np.array([165, 80, 150])
-        high_red = np.array([184, 255, 255])
+        low_red = np.array(refLow[0])
+        low_red2 = np.array([0,80, 70])
+        high_red = np.array(refHigh[0])
+        high_red2 = np.array([10, 255, 255])
         red_mask = cv2.inRange(hsv_frame, low_red, high_red)
+        red_mask2 = cv2.inRange(hsv_frame, low_red2, high_red2)
         red = cv2.bitwise_and(frame, frame, mask=red_mask)
+        red2 = cv2.bitwise_and(frame, frame, mask=red_mask2)
+
 
         # Blue color
-        low_blue = np.array([90, 80, 2])
-        high_blue = np.array([110, 255, 255])
+        low_blue = np.array(refLow[2])
+        high_blue = np.array(refHigh[2])
         blue_mask = cv2.inRange(hsv_frame, low_blue, high_blue)
         blue = cv2.bitwise_and(frame, frame, mask=blue_mask)
         # Green color
-        low_green = np.array([45, 52, 72])
-        high_green = np.array([60, 255, 255])
+        low_green = np.array(refLow[1])
+        high_green = np.array(refHigh[1])
         green_mask = cv2.inRange(hsv_frame, low_green, high_green)
         green = cv2.bitwise_and(frame, frame, mask=green_mask)
-        # Green color
-        low_yellow = np.array([25, 60, 120])
-        high_yellow = np.array([40, 255, 255])
+        # Yellow color
+        low_yellow = np.array(refLow[3])
+        high_yellow = np.array(refHigh[3])
         yellow_mask = cv2.inRange(hsv_frame, low_yellow, high_yellow)
         yellow = cv2.bitwise_and(frame, frame, mask=yellow_mask)
         cv2.imshow("Frame", frame)
         #cv2.imshow("Hsv_Frame", hsv_frame)
 
         cv2.imshow("Red", red)
+        #cv2.imshow("Red2", red2)
         cv2.imshow("Blue", blue)
         cv2.imshow("Green", green)
         cv2.imshow("Yellow", yellow)
