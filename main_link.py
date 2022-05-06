@@ -23,9 +23,9 @@ b = ["333311114",
      "111112222",
      "444444442"]
 def main():
-
+    isLast = [False,False,False,True]
     for i in range(4):
-        matrix.append(main_acquisition.capture_video()  )
+        matrix.append(main_acquisition.capture_video(isLast[i]))
     print(matrix)
     for i in range(4):
         face = [int(a[i][j]) for j in range(9)]
