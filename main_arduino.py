@@ -1,15 +1,16 @@
-# Importing Libraries
-import serial
+
 import time
 from tkinter import *
-arduino = serial.Serial(port='COM6', baudrate=115200, timeout=.1)
+import raspberrypi_instead_of_arduino as ras
+from gpiozero import Button
+from signal import pause
+
+
 
 
 def write_reads(x):
-    arduino.write(bytes(x, 'utf-8'))
-    time.sleep(0.05)
-    data = arduino.readline()
-    return data
+    ras.arduino(bytes(x, 'utf-8'))
+
 
 def traduction(algo):
     temp = ""
@@ -33,47 +34,39 @@ def traduction(algo):
 
     return temp
 
-def main(algo):
 
-    sommet = [letter.replace("'","P").upper().replace('P', "'" ) for letter in algo if letter.islower()]
+def main(algo, button):
+    sommet = [letter.replace("'", "P").upper().replace('P', "'") for letter in algo if letter.islower()]
     sommets = traduction(sommet)
     middl = [letter for letter in algo if letter.isupper()]
     middle = traduction(middl)
 
     message_sommet = "9"
-    for l in sommets :
+    for l in sommets:
         message_sommet += l
-
 
     message_face = "0"
     for l in middle:
         message_face += l
     # time.sleep(1.5)
-    temp = ["r'", "U"]
-    print(message_sommet)
-    write_reads(message_sommet)
-    time.sleep(1*len(sommet))
-    print(message_face)
-    write_reads(message_face)
-    time.sleep(1 * len(middl))
-
+    message = message_sommet + message_face
+    while (True):
+        if button.is_pressed:
+            print(message_sommet)
+            write_reads("")
+            time.sleep(2)
+            write_reads(message)
+            break
 
 
 def servo_manually():
-    # set up GUI
-    root = Tk()
+    for i in range(2):
+        ras.arduino('012345678')
+        time.sleep(2)
 
-    # draw a nice big slider for servo position
-    scale = Scale(root,
-                  command=write_reads,
-                  to=175,
-                  orient=HORIZONTAL,
-                  length=400,
-                  label='Angle')
-    scale.pack(anchor=CENTER)
-
-    # run Tk event loop
-    root.mainloop()
 
 if __name__ == "__main__":
-  servo_manually()
+    while (True):
+        button = Button(2)
+        button.when_pressed = servo_manually
+        pause()
