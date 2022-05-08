@@ -8,8 +8,6 @@ from signal import pause
 
 
 
-def write_reads(x):
-    ras.arduino(bytes(x, 'utf-8'))
 
 
 def traduction(algo):
@@ -52,17 +50,13 @@ def main(algo, button):
     message = message_sommet + message_face
     while (True):
         if button.is_pressed:
-            print(message_sommet)
-            write_reads("")
-            time.sleep(2)
-            write_reads(message)
+            ras.arduino(message)
             break
 
 
 def servo_manually():
-    for i in range(2):
-        ras.arduino('012345678')
-        time.sleep(2)
+    for i in range(1):
+        ras.arduino('012345678912345678')
 
 
 if __name__ == "__main__":
