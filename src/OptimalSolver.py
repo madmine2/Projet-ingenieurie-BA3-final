@@ -1,12 +1,13 @@
 # from Pyraminx import Pyraminx
 from src import pUtils, cli
 from src.CentreSolver import CentreSolver
+import time
 
 moves = ["U", "F", "R", "L"]
 
 algorithms = []
-
-def dfsearch(pyraminx):
+timeLimit = 30
+def dfsearch(pyraminx, Time):
   layer = []
   solvedP = pUtils.solvedPyraminx()
   if pyraminx.eq(solvedP):
@@ -17,23 +18,32 @@ def dfsearch(pyraminx):
   while True:
     newLayer = []
     for p in layer:
-      newLayer += generateNeighbors(p[0], p[1])
+      add =  generateNeighbors(p[0], p[1], Time)
+      if add == -789:
+        return -789
+      newLayer += add
+
     layer = newLayer
     for p in layer:
+
+      if time.time() - Time >= timeLimit:
+        return -789
       if p[0].eq(solvedP):
         return p[1]
     if len(layer[0][1]) >= 14:
       print("No solution found. Sorry.")
       return []
 
-def generateNeighbors(pyraminx, scramble):
+def generateNeighbors(pyraminx, scramble, Time):
   neighbors = []
   for move in moves:
     neighbors.append((pyraminx.makeMove(move), scramble + [move]))
+    if time.time() - Time >= timeLimit:
+      return -789
   return neighbors
 
 
-def solveP(pyraminx, algo):
+def solveP(pyraminx, algo, Time):
   solvedP = pUtils.solvedPyraminx()
   currP = pyraminx.copy()
   currP.applyAlgo(algo)
@@ -44,6 +54,8 @@ def solveP(pyraminx, algo):
     return 0
   else:
     for moveId in moves:
+      if time.time() - Time >= timeLimit:
+        return -789
       # print("Making move: " + moveId)
       newAlgo = algo[:]
       newAlgo.append(moveId)
@@ -56,11 +68,14 @@ def solveP(pyraminx, algo):
     return 0
 
 def solve(pyraminx):
+  Time = time.time()
   cSolver = CentreSolver(pyraminx.copy())
   tipAlgo = cSolver.solveTips()
   pyraminx.applyAlgo(tipAlgo)
   # solveP(pyraminx, [])
-  algo = dfsearch(pyraminx)
+  algo = dfsearch(pyraminx, Time)
+  if algo == -789:
+    return -789
   # return tipAlgo + pUtils.simplifyAlgo(algorithms[0])
   return tipAlgo + pUtils.simplifyAlgo(algo)
 

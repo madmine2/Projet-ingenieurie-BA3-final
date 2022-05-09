@@ -6,10 +6,7 @@ from src.Pyraminx import Pyraminx
 import main_arduino
 import time
 import main_acquisition
-from gpiozero import Button
 from signal import pause
-
-
 
 # utiliser main_acquisition pour récupérer la matrice des faces
 
@@ -32,7 +29,7 @@ def main():
     print(matrix)
     for i in range(4):
         face = [int(a[i][j]) for j in range(9)]
-        matrix2.append(face)
+        matrix.append(face)
 
 
     #solveur pas optimal, envisager de laisser le choix avec solveur optimal
@@ -50,8 +47,13 @@ def main():
         print("That's not a valid configuration. Aborting .")
         return
 
-    pSolver = PyraminxSolver(pyraminx)
-    algo = pSolver.solve() #résous le pyraminx
+
+
+    algo = OptimalSolver.solve(pyraminx)
+    if algo == -789:
+        print("too long")
+        pSolver = PyraminxSolver(pyraminx)
+        algo = pSolver.solve()  # résous le pyraminx
     algo = pUtils.simplifyAlgo(algo) #simplifie l'algo
     #time.sleep(2) # problème avec les ports serial sans ce timer (pourquoi ???? I DON T FUCKING KNOW, je viens de perdre 2 heures à cause de ça)
     print([letter for letter in algo if letter.islower()])
