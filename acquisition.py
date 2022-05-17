@@ -2,7 +2,7 @@ import cv2
 # import the opencv library
 import numpy as np
 from gpiozero import Button
-
+from signal import pause
 
 from PIL import Image, ImageDraw
 

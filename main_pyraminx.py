@@ -2,7 +2,7 @@ from src import pUtils, cli
 from src.PyraminxSolver import PyraminxSolver
 from src import OptimalSolver
 from src.Pyraminx import Pyraminx
-
+from signal import pause
 
 def welcome():
   print('''

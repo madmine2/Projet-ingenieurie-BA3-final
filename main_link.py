@@ -7,6 +7,7 @@ import conversion
 import time
 import acquisition
 from gpiozero import Button
+from signal import pause
 #import raspberrypi_instead_of_arduino as ras
 
 # utiliser main_acquisition pour récupérer la matrice des faces

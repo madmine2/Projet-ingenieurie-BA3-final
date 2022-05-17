@@ -2,7 +2,7 @@ import time
 from tkinter import *
 import control_motor as ras
 from gpiozero import Button
-
+from signal import pause
 
 def traduction(algo):
     temp = ""
