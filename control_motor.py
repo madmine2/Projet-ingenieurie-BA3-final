@@ -57,7 +57,7 @@ def arduino(command):
         if letter == '1':
             moteur1.motor_go(False,  # True=Clockwise, False=Counter-Clockwise
                              "Full",  # Step type (Full,Half,1/4,1/8,1/16,1/32)
-                             nombreSte p *2,  # number of steps
+                             nombreStep *2,  # number of steps
                              delay,  # step delay [sec]
                              False,  # True = print verbose output
                              .05)  # initial delay [sec]
@@ -66,19 +66,19 @@ def arduino(command):
             moteur1.motor_go(False,  "Full", nombreStep, delay, False, .05)
             time.sleep(waitTime)
         if letter == '3':
-            moteur2.motor_go(False, "Full", nombreSte p *2, delay, False, .05)
+            moteur2.motor_go(False, "Full", nombreStep *2, delay, False, .05)
             time.sleep(waitTime)
         if letter == '4':
             moteur2.motor_go(False, "Full", nombreStep, delay, False, .05)
             time.sleep(waitTime)
         if letter == '5':
-            moteur3.motor_go(False, "Full", nombreSte p *2, delay, False, .05)
+            moteur3.motor_go(False, "Full", nombreStep *2, delay, False, .05)
             time.sleep(waitTime)
         if letter == '6':
             moteur3.motor_go(False, "Full", nombreStep, delay, False, .05)
             time.sleep(waitTime)
         if letter == '7':
-            moteur4.motor_go(False, "Full", nombreSte p *2, delay, False, .05)
+            moteur4.motor_go(False, "Full", nombreStep *2, delay, False, .05)
             time.sleep(waitTime)
         if letter == '8':
             moteur4.motor_go(False, "Full", nombreStep, delay, False, .05)
