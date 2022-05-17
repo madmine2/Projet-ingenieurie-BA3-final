@@ -23,7 +23,7 @@ pwm = GPIO.PWM(pwm_gpio, frequence)
 
 # define GPIO pins for step moteurs (nema17)
 # même directions pour les 4 moteurs, car ils ne tournent pas en même temps
-directio n= 22 # Direction (DIR) GPIO Pin
+direction= 22 # Direction (DIR) GPIO Pin
 # un step par moteur
 step1 = 23 # Step GPIO Pin
 step2 = 27 # Step GPIO Pin
