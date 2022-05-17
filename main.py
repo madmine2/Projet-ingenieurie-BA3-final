@@ -3,10 +3,9 @@ from src import pUtils, cli
 from src.PyraminxSolver import PyraminxSolver
 from src import OptimalSolver
 from src.Pyraminx import Pyraminx
-import main_arduino
+import conversion
 import time
-import main_acquisition
-from signal import pause
+import acquisition
 from gpiozero import Button
 #import raspberrypi_instead_of_arduino as ras
 
