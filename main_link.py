@@ -7,13 +7,14 @@ import main_arduino
 import time
 import main_acquisition
 from signal import pause
+from gpiozero import Button
+#import raspberrypi_instead_of_arduino as ras
 
 # utiliser main_acquisition pour récupérer la matrice des faces
 
 #faces = main_acquisition()  (conceptuel)
 
-matrix = []
-matrix2 = []
+
 a = ["334411113",
 "233122433",
 "412243344",
@@ -23,13 +24,15 @@ b = ["333311114",
      "111112222",
      "444444442"]
 def main():
+    matrix = []
+    matrix2 = []
     isLast = [False,False,False,True]
     for i in range(4):
         matrix.append(main_acquisition.capture_video(isLast[i], button))
     print(matrix)
     for i in range(4):
         face = [int(a[i][j]) for j in range(9)]
-        matrix.append(face)
+        matrix2.append(face)
 
 
     #solveur pas optimal, envisager de laisser le choix avec solveur optimal
@@ -49,11 +52,11 @@ def main():
 
 
 
-    algo = OptimalSolver.solve(pyraminx)
-    if algo == -789:
-        print("too long")
-        pSolver = PyraminxSolver(pyraminx)
-        algo = pSolver.solve()  # résous le pyraminx
+#     algo = OptimalSolver.solve(pyraminx)
+#     if algo == -789:
+#         print("too long")
+    pSolver = PyraminxSolver(pyraminx)
+    algo = pSolver.solve()  # résous le pyraminx
     algo = pUtils.simplifyAlgo(algo) #simplifie l'algo
     #time.sleep(2) # problème avec les ports serial sans ce timer (pourquoi ???? I DON T FUCKING KNOW, je viens de perdre 2 heures à cause de ça)
     print([letter for letter in algo if letter.islower()])
